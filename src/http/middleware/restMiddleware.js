@@ -31,6 +31,7 @@ module.exports = (app) => (request, response, next) => {
 
 	let resourceName = '';
 	let actionType = 'collection';
+	const ids = {};
 
 	// Resolve the controller based on the request path
 	const resources = chunk(requestPath.split('/'), 2).reduce((carry, pair) => {
@@ -43,9 +44,9 @@ module.exports = (app) => (request, response, next) => {
 
 		// If the request has this format /resource/{id},
 		// means that is requesting a resource with an id is present in the path.
-		if (isUndefined(resourceId) === false && isEmpty(resourceId) === false) {
-			// Set resource id into the request params
-			request.params[resourceIdKey] = resourceId;
+		if (resourceId !== null && isEmpty(resourceId) === false) {
+			// Save the id for the resource
+			ids[resourceIdKey] = resourceId;
 			actionType = 'resource';
 		}
 		// Otherwise is requestion a collection. (without id)
@@ -69,14 +70,18 @@ module.exports = (app) => (request, response, next) => {
 		throw new NotFound(`Resource ${resourceName} not found!`);
 	}
 
-	const Controller = require(controllerPath);
+	const Controller = require(controllerPath); // eslint-disable-line global-require
 
 	const controllerInstance = new Controller(app);
 
 	// Check if the action exists in the controller
 	if (isFunction(controllerInstance[constrollerAction]) === false) {
-		throw new NotFound(`${capitalize(actionType)} for resource ${resourceName} not found!`);
+		const id = ids[`${resourceName.toLowerCase()}_id`] || '';
+		throw new NotFound(`${capitalize(actionType)} ${id} for ${resourceName} not found!`);
 	}
+
+	// Set ids into the request params
+	request.params = Object.assign({}, request.params, ids);
 
 	if (isFunction(controllerInstance.beforeAction) !== false) {
 		request = controllerInstance.beforeAction(request);
