@@ -13,5 +13,5 @@ NodeJS starter kit based on hexagonal architecture with a REST layer.
 
 # TODO
 - Event Bus
-- Test
-
+- Logger
+- Tests
