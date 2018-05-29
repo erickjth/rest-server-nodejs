@@ -10,11 +10,11 @@ module.exports = function(options = {}) {
 	return (error, request, response, next) => { // eslint-disable-line no-unused-vars
 		// Log the error if it didn't come from a service method call
 		if (options.logger && typeof options.logger.error === 'function') {
-			//options.logger.error(error);
+			options.logger.error(error);
 		}
 
 		if (error.type === 'ApplicationError') {
-			error = new GeneralError(error.message, 400);
+			error = new GeneralError(error.message, 500);
 		} else if (error.type !== 'httpError') {
 			const oldError = error;
 			error = new GeneralError(oldError.message);
