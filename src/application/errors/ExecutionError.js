@@ -1,8 +1,8 @@
 const { APPLICATION_ERRORS } = require('./index');
 
-function ExecutionError(message, commandName) {
+function ExecutionError(message, commandName, code) {
 	this.message = message || `Something went wrong trying to run the command ${commandName}`;
-	this.code = APPLICATION_ERRORS.EXECUTION_ERROR;
+	this.code = code || APPLICATION_ERRORS.EXECUTION_ERROR;
 
 	this.toJSON = () => ({
 		code: this.code,
