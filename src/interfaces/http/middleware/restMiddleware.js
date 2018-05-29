@@ -50,7 +50,7 @@ module.exports = (request, response, next) => {
 			ids[resourceIdKey] = resourceId;
 			actionType = 'resource';
 		}
-		// Otherwise is requestion a collection. (without id)
+		// Otherwise is requesting a collection. (without id)
 
 		resourceName = resource;
 		carry.push(resource);
