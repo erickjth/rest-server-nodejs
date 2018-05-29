@@ -44,7 +44,7 @@ module.exports = (request, response, next) => {
 		const resourceIdKey = `${resource.toLowerCase()}_id`;
 
 		// If the request has this format /resource/{id},
-		// means that is requesting a resource with an id is present in the path.
+		// means that is requesting a resource with an id in the path.
 		if (resourceId !== null && isEmpty(resourceId) === false) {
 			// Save the id for the resource
 			ids[resourceIdKey] = resourceId;
