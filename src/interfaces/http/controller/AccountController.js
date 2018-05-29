@@ -49,7 +49,7 @@ class AccountController extends BaseController {
 
 			const result = await this.commandBus.searchAccounts({
 				filter: { id }
-			}).catch(e => e);
+			});
 
 			const account = get(result, '[0]', null);
 
